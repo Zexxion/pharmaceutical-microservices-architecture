@@ -1,4 +1,4 @@
-package com.zexxion.pharmaceutical.serialization.mappers;
+package com.zexxion.pharmaceutical.serialization.mapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;

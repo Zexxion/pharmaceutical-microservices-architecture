@@ -1,7 +1,6 @@
 package com.zexxion.pharmaceutical.persistence.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zexxion.pharmaceutical.serialization.mappers.DomainEntity;
+import com.zexxion.pharmaceutical.serialization.mapping.DomainEntity;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;

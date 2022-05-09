@@ -6,7 +6,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.ProducerDTO;
 import com.zexxion.pharmaceutical.persistence.entities.Producer;
 import com.zexxion.pharmaceutical.persistence.repositories.ProducersRepository;
-import com.zexxion.pharmaceutical.serialization.mappers.ProducerModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.ProducerModelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;

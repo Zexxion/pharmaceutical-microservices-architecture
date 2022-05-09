@@ -1,8 +1,8 @@
 package com.zexxion.pharmaceutical.configuration;
 
-import com.zexxion.pharmaceutical.serialization.mappers.MedicationModelMapper;
-import com.zexxion.pharmaceutical.serialization.mappers.ProducerModelMapper;
-import com.zexxion.pharmaceutical.serialization.mappers.SideEffectModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.MedicationModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.ProducerModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.SideEffectModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

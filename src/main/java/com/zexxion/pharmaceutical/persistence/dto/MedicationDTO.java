@@ -1,6 +1,6 @@
 package com.zexxion.pharmaceutical.persistence.dto;
 
-import com.zexxion.pharmaceutical.serialization.mappers.DomainDTO;
+import com.zexxion.pharmaceutical.serialization.mapping.DomainDTO;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;

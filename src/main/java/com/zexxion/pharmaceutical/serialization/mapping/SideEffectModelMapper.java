@@ -1,4 +1,4 @@
-package com.zexxion.pharmaceutical.serialization.mappers;
+package com.zexxion.pharmaceutical.serialization.mapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -6,7 +6,6 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.SideEffectDTO;
 import com.zexxion.pharmaceutical.persistence.entities.SideEffect;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 
 public class SideEffectModelMapper implements DomainModelMapper, DomainModelPatcher {
     @Override

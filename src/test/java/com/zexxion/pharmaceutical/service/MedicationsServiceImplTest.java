@@ -7,7 +7,7 @@ import com.zexxion.pharmaceutical.persistence.entities.Producer;
 import com.zexxion.pharmaceutical.persistence.entities.SideEffect;
 import com.zexxion.pharmaceutical.persistence.repositories.MedicationsRepository;
 import com.zexxion.pharmaceutical.persistence.repositories.MedicationsStockRepository;
-import com.zexxion.pharmaceutical.serialization.mappers.MedicationModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.MedicationModelMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

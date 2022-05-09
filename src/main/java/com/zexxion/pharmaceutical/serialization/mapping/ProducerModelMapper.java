@@ -1,4 +1,4 @@
-package com.zexxion.pharmaceutical.serialization.mappers;
+package com.zexxion.pharmaceutical.serialization.mapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -6,7 +6,6 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.ProducerDTO;
 import com.zexxion.pharmaceutical.persistence.entities.Producer;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 
 public class ProducerModelMapper implements DomainModelMapper, DomainModelPatcher {
     @Override

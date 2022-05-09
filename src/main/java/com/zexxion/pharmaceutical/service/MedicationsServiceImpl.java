@@ -8,7 +8,7 @@ import com.zexxion.pharmaceutical.persistence.entities.Medication;
 import com.zexxion.pharmaceutical.persistence.entities.MedicationStock;
 import com.zexxion.pharmaceutical.persistence.repositories.MedicationsRepository;
 import com.zexxion.pharmaceutical.persistence.repositories.MedicationsStockRepository;
-import com.zexxion.pharmaceutical.serialization.mappers.MedicationModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.MedicationModelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;

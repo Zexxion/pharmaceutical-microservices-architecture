@@ -6,7 +6,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.SideEffectDTO;
 import com.zexxion.pharmaceutical.persistence.entities.SideEffect;
 import com.zexxion.pharmaceutical.persistence.repositories.SideEffectsRepository;
-import com.zexxion.pharmaceutical.serialization.mappers.SideEffectModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.SideEffectModelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;

@@ -3,7 +3,7 @@ package com.zexxion.pharmaceutical.service;
 import com.zexxion.pharmaceutical.persistence.dto.ProducerDTO;
 import com.zexxion.pharmaceutical.persistence.entities.Producer;
 import com.zexxion.pharmaceutical.persistence.repositories.ProducersRepository;
-import com.zexxion.pharmaceutical.serialization.mappers.ProducerModelMapper;
+import com.zexxion.pharmaceutical.serialization.mapping.ProducerModelMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
