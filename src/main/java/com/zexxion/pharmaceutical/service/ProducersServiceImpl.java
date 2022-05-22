@@ -40,7 +40,7 @@ public class ProducersServiceImpl implements ProducersService {
     }
 
     @Override
-    public ProducerDTO updateProducer(Integer producerId, ProducerDTO producer) {
+    public ProducerDTO updateProducer(final Integer producerId, final ProducerDTO producer) {
         producer.setId(producerId);
         final Producer producerEntity = modelMapper.convertToEntity(producer);
 
@@ -48,7 +48,7 @@ public class ProducersServiceImpl implements ProducersService {
     }
 
     @Override
-    public ProducerDTO patchProducer(Integer producerId, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+    public ProducerDTO patchProducer(final Integer producerId, final JsonPatch patch) throws JsonPatchException, JsonProcessingException {
         final Optional<Producer> optionalProducer = producersRepository.findById(producerId);
 
         if (optionalProducer.isPresent()) {

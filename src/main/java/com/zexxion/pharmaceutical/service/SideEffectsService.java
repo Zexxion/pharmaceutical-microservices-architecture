@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SideEffectsService {
     List<SideEffectDTO> getSideEffects();
-    SideEffectDTO getSideEffect(final Integer sideEfffectId);
+    SideEffectDTO getSideEffect(final Integer sideEffectId);
     SideEffectDTO saveSideEffect(final SideEffectDTO sideEffect);
     SideEffectDTO updateSideEffect(final Integer sideEffectId, final SideEffectDTO sideEffect);
     SideEffectDTO patchSideEffect(final Integer sideEffectId, final JsonPatch patch) throws JsonPatchException, JsonProcessingException;
