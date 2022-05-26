@@ -89,7 +89,7 @@ public class MedicationsServiceImpl implements MedicationsService {
         }
     }
 
-    @Override
+    /* @Override
     public List<MedicationDTO> patchMedications(List<Integer> medicationsIds, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
         final MedicationModelMapper mapper = new MedicationModelMapper();
         List<Medication> candidatesMedications = medicationsRepository.findByIdIn(medicationsIds);
@@ -102,7 +102,7 @@ public class MedicationsServiceImpl implements MedicationsService {
         medicationsRepository.saveAll(candidatesMedications).forEach((medication -> patchedMedicationsDtoList.add(mapper.convertToDTO(medication))));
 
         return patchedMedicationsDtoList.size() > 0 ? patchedMedicationsDtoList : null;
-    }
+    } */
 
     @Override
     public void deleteMedication(Integer medicationId) {

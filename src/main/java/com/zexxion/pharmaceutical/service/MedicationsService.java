@@ -12,6 +12,6 @@ public interface MedicationsService {
     MedicationDTO saveMedication(final MedicationDTO medication);
     MedicationDTO updateMedication(final Integer medicationId, final MedicationDTO medication);
     MedicationDTO patchMedication(final Integer medicationId, final JsonPatch patch) throws JsonPatchException, JsonProcessingException;
-    List<MedicationDTO> patchMedications(final List<Integer> medicationsIds, final JsonPatch patch) throws JsonPatchException, JsonProcessingException;
+    // List<MedicationDTO> patchMedications(final List<Integer> medicationsIds, final JsonPatch patch) throws JsonPatchException, JsonProcessingException;
     void deleteMedication(final Integer medicationId);
 }
