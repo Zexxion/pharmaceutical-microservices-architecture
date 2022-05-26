@@ -6,6 +6,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.MedicationDTO;
 import com.zexxion.pharmaceutical.persistence.entities.Medication;
 import org.modelmapper.ModelMapper;
+import java.util.List;
 
 public class MedicationModelMapper implements DomainModelMapper, DomainModelPatcher {
     @Override
@@ -23,5 +24,10 @@ public class MedicationModelMapper implements DomainModelMapper, DomainModelPatc
     @Override
     public MedicationDTO applyPatchToDto(final JsonPatch patch, final DomainDTO dto) throws JsonPatchException, JsonProcessingException {
         return (MedicationDTO) ModelPatcher.applyPatchToDto(patch, dto);
+    }
+
+    @Override
+    public List<? extends DomainDTO> applyPatchToDtoList(JsonPatch patch, List<? extends DomainDTO> dtoList) throws JsonPatchException, JsonProcessingException {
+        return ModelPatcher.applyPatchToDtoList(patch, dtoList);
     }
 }

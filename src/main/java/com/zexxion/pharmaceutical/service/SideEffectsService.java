@@ -12,4 +12,5 @@ public interface SideEffectsService {
     SideEffectDTO saveSideEffect(final SideEffectDTO sideEffect);
     SideEffectDTO updateSideEffect(final Integer sideEffectId, final SideEffectDTO sideEffect);
     SideEffectDTO patchSideEffect(final Integer sideEffectId, final JsonPatch patch) throws JsonPatchException, JsonProcessingException;
+    void deleteSideEffect(final Integer sideEffectId);
 }

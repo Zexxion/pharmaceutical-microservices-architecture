@@ -19,7 +19,10 @@ public class SideEffect implements DomainEntity {
     @Column(name = "description", length = 48)
     private String description;
 
-    @ManyToMany(mappedBy = "sideEffects")
+    @ManyToMany
+    @JoinTable(name = "medication_side_effect",
+            joinColumns = { @JoinColumn(name = "id_side_effect") },
+            inverseJoinColumns = { @JoinColumn(name = "id_medication") })
     private List<Medication> medications;
 
     public SideEffect() { }
@@ -40,5 +43,10 @@ public class SideEffect implements DomainEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, description);
+    }
+
+    @PreRemove
+    public void beforeRemove() {
+        this.medications.forEach(medication -> medication.getSideEffects().remove(this));
     }
 }

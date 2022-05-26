@@ -61,4 +61,9 @@ public class ProducersServiceImpl implements ProducersService {
             return null;
         }
     }
+
+    @Override
+    public void deleteProducer(final Integer producerId) {
+        producersRepository.deleteById(producerId);
+    }
 }

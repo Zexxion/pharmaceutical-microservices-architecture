@@ -28,13 +28,10 @@ public class Medication implements DomainEntity {
     private Integer dosage;
 
     @ManyToOne
-    @JoinColumn(name = "producer", nullable = false)
+    @JoinColumn(name = "producer")
     private Producer producer;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "medication_side_effect",
-               joinColumns = { @JoinColumn(name = "id_medication") },
-               inverseJoinColumns = { @JoinColumn(name = "id_side_effect") })
+    @ManyToMany(mappedBy = "medications")
     private List<SideEffect> sideEffects;
 
     @Transient
@@ -70,5 +67,10 @@ public class Medication implements DomainEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description, dosage, producer);
+    }
+
+    @PreRemove
+    public void beforeRemove() {
+        this.sideEffects.clear();
     }
 }

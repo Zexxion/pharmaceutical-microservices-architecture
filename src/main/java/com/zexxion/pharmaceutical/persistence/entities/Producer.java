@@ -25,7 +25,7 @@ public class Producer implements DomainEntity {
     @Column(name = "country", length = 36)
     private String country;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "producer")
+    @OneToMany(mappedBy = "producer")
     private List<Medication> medications;
 
     public Producer() { }
@@ -48,5 +48,10 @@ public class Producer implements DomainEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, locality, country);
+    }
+
+    @PreRemove
+    public void beforeRemove() {
+        this.medications.forEach(medication -> medication.setProducer(null));
     }
 }

@@ -88,4 +88,25 @@ public class MedicationsServiceImpl implements MedicationsService {
             return null;
         }
     }
+
+    @Override
+    public List<MedicationDTO> patchMedications(List<Integer> medicationsIds, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        final MedicationModelMapper mapper = new MedicationModelMapper();
+        List<Medication> candidatesMedications = medicationsRepository.findByIdIn(medicationsIds);
+
+        //TODO: Make the the next line code more readable
+        final List<MedicationDTO> patchedMedicationsDtoList = (List<MedicationDTO>) mapper.applyPatchToDtoList(patch, candidatesMedications.stream().map(mapper::convertToDTO).collect(Collectors.toList()));
+        candidatesMedications = patchedMedicationsDtoList.stream().map(mapper::convertToEntity).collect(Collectors.toList());
+        patchedMedicationsDtoList.clear();
+
+        medicationsRepository.saveAll(candidatesMedications).forEach((medication -> patchedMedicationsDtoList.add(mapper.convertToDTO(medication))));
+
+        return patchedMedicationsDtoList.size() > 0 ? patchedMedicationsDtoList : null;
+    }
+
+    @Override
+    public void deleteMedication(Integer medicationId) {
+        medicationsStockRepository.deleteByMedicationId(medicationId);
+        medicationsRepository.deleteById(medicationId);
+    }
 }

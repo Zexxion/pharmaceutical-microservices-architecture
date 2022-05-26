@@ -64,4 +64,11 @@ public class SideEffectsController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
+
+    @DeleteMapping(path = "/{side-effect-id}")
+    public ResponseEntity<?> deleteSideEffect(@PathVariable(name = "side-effect-id") final Integer sideEffectId) {
+        sideEffectsService.deleteSideEffect(sideEffectId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

@@ -71,4 +71,11 @@ public class ProducersController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
+
+    @DeleteMapping(path = "{producer-id}")
+    public ResponseEntity<?> deleteProducer(@PathVariable("producer-id") final Integer producerId) {
+        producersService.deleteProducer(producerId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

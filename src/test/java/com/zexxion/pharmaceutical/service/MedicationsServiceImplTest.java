@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -55,10 +56,12 @@ public class MedicationsServiceImplTest {
         final Medication medicationTest = getGeneratedMedications().get(0);
         final MedicationDTO medicationTestDto = medicationModelMapper.convertToDTO(medicationTest);
 
+        given(medicationsStockRepository.save(medicationTest.getStock())).willReturn(medicationTest.getStock());
         given(medicationsRepository.save(medicationTest)).willReturn(medicationTest);
-        given(medicationsService.saveMedication(medicationTestDto)).willReturn(medicationTestDto);
+        final MedicationDTO savedMedicationDto = medicationsService.saveMedication(medicationTestDto);
 
         verify(medicationsRepository).save(medicationTest);
+        assertThat(medicationTestDto).isEqualTo(savedMedicationDto);
     }
 
     @Test
@@ -67,10 +70,20 @@ public class MedicationsServiceImplTest {
         final MedicationDTO medicationTestDto = medicationModelMapper.convertToDTO(medicationTest);
 
         given(medicationsRepository.save(medicationTest)).willReturn(medicationTest);
-        given(medicationsService.updateMedication(medicationTestDto.getId(), medicationTestDto)).willReturn(medicationTestDto);
+
+        final MedicationDTO updatedMedication = medicationsService.updateMedication(medicationTestDto.getId(), medicationTestDto);
 
         verify(medicationsStockRepository).updateStock(medicationTestDto.getStock(), medicationTestDto.getId());
         verify(medicationsRepository).save(medicationTest);
+        assertThat(medicationTestDto).isEqualTo(updatedMedication);
+    }
+
+    @Test
+    public void testDeleteMedication() {
+        medicationsService.deleteMedication(any(Integer.class));
+
+        verify(medicationsStockRepository).deleteByMedicationId(any(Integer.class));
+        verify(medicationsRepository).deleteById(any(Integer.class));
     }
 
     private static List<Medication> getGeneratedMedications() {

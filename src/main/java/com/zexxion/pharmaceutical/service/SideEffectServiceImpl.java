@@ -65,4 +65,9 @@ public class SideEffectServiceImpl implements SideEffectsService {
             return null;
         }
     }
+
+    @Override
+    public void deleteSideEffect(Integer sideEffectId) {
+        sideEffectsRepository.deleteById(sideEffectId);
+    }
 }

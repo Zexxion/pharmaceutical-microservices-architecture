@@ -17,4 +17,7 @@ public interface MedicationsStockRepository extends CrudRepository<MedicationSto
     @Modifying
     @Query("UPDATE MedicationStock m SET m.stock = :stock WHERE m.medication.id = :medicationId")
     void updateStock(@Param("stock") final Integer stock, @Param("medicationId") final Integer medicationId);
+
+    @Transactional
+    void deleteByMedicationId(final Integer medicationId);
 }

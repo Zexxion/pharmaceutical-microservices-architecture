@@ -2,10 +2,13 @@ package com.zexxion.pharmaceutical.service;
 
 import com.zexxion.pharmaceutical.persistence.dto.ProducerDTO;
 import com.zexxion.pharmaceutical.persistence.entities.Producer;
+import com.zexxion.pharmaceutical.persistence.repositories.MedicationsRepository;
 import com.zexxion.pharmaceutical.persistence.repositories.ProducersRepository;
+import com.zexxion.pharmaceutical.serialization.mapping.MedicationModelMapper;
 import com.zexxion.pharmaceutical.serialization.mapping.ProducerModelMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.util.Collections;
@@ -17,6 +20,8 @@ import static org.mockito.Mockito.verify;
 
 public class ProducersServiceImplTest {
     private ProducersService producersService;
+
+    @InjectMocks
     private ProducerModelMapper producerModelMapper;
 
     @Mock
@@ -26,7 +31,6 @@ public class ProducersServiceImplTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         producersService = new ProducersServiceImpl(producersRepository, producerModelMapper);
-        producerModelMapper = new ProducerModelMapper();
     }
 
     @Test
@@ -47,8 +51,18 @@ public class ProducersServiceImplTest {
         final ProducerDTO producerTestDto = producerModelMapper.convertToDTO(producerTest);
 
         given(producersRepository.save(producerTest)).willReturn(producerTest);
-        given(producersService.saveProducer(producerTestDto)).willReturn(producerTestDto);
+
+        final ProducerDTO savedProducer = producersService.saveProducer(producerTestDto);
+
         verify(producersRepository).save(producerTest);
+        assertThat(producerTestDto).isEqualTo(savedProducer);
+    }
+
+    @Test
+    public void testDeleteProducer() {
+        final int producerId = 1;
+        producersService.deleteProducer(producerId);
+        verify(producersRepository).deleteById(producerId);
     }
 
     private List<Producer> getGeneratedProducers() {

@@ -44,6 +44,11 @@ public class MedicationsController {
         }
     }
 
+    /* @PatchMapping(path = "")
+    public ResponseEntity<?> patchMedications(@RequestBody final JsonPatch patch) {
+
+    } */
+
     @PatchMapping(path = "/{medication-id}", consumes = "application/json-patch+json")
     public ResponseEntity<?> patchMedication(@PathVariable(value = "medication-id") final Integer medicationId, @RequestBody final JsonPatch patch) {
         try {
@@ -69,5 +74,12 @@ public class MedicationsController {
         } else {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
+    }
+
+    @DeleteMapping(path = "{medication-id}")
+    public ResponseEntity<?> deleteMedication(@PathVariable("medication-id") final Integer medicationId) {
+        medicationsService.deleteMedication(medicationId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
