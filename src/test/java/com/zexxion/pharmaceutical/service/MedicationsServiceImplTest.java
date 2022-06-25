@@ -1,8 +1,8 @@
 package com.zexxion.pharmaceutical.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.MedicationDTO;
@@ -18,14 +18,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javax.swing.text.html.Option;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -49,7 +49,7 @@ public class MedicationsServiceImplTest {
     }
 
     @Test
-    public void testGetMedications() {
+    public void Expect_GetMedications() {
         final List<Medication> medicationsTest = getMedications();
         given(medicationsRepository.findAll()).willReturn(medicationsTest);
 
@@ -61,7 +61,7 @@ public class MedicationsServiceImplTest {
     }
 
     @Test
-    public void testGetMedication() {
+    public void When_IdentifierIsValid_Expect_GetMedication() {
         final Medication medicationEntity = getMedications().get(0);
         final MedicationDTO medication = medicationModelMapper.convertToDTO(medicationEntity);
         final Integer medicationId = medicationEntity.getId();
@@ -74,7 +74,17 @@ public class MedicationsServiceImplTest {
     }
 
     @Test
-    public void testSaveMedication() {
+    public void When_IdentifierIsInvalid_Expect_GetNoneMedication() {
+        final Integer medicationId = 122;
+
+        given(medicationsRepository.findById(medicationId)).willReturn(Optional.empty());
+        final MedicationDTO nullMedication = medicationsService.getMedication(medicationId);
+
+        assertThat(nullMedication).isNull();
+    }
+
+    @Test
+    public void Expect_SaveMedication() {
         final Medication medicationTest = getMedication();
         final MedicationDTO medicationTestDto = medicationModelMapper.convertToDTO(medicationTest);
 
@@ -87,7 +97,7 @@ public class MedicationsServiceImplTest {
     }
 
     @Test
-    public void testUpdateMedication() {
+    public void Expect_UpdateMedication() {
         final Medication medicationTest = getMedications().get(0);
         final MedicationDTO medicationTestDto = medicationModelMapper.convertToDTO(medicationTest);
 
@@ -101,7 +111,7 @@ public class MedicationsServiceImplTest {
     }
 
     @Test
-    public void testPatchMedication() throws IOException, JsonPatchException {
+    public void When_IdentifierIsValid_Expect_PatchMedication() throws IOException, JsonPatchException {
         final String patchString = "[{\"op\":\"replace\",\"path\":\"/producer\",\"value\":502012},{\"op\":\"replace\",\"path\":\"/stock\",\"value\":210}]";
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.readTree(patchString);
@@ -123,7 +133,31 @@ public class MedicationsServiceImplTest {
     }
 
     @Test
-    public void testDeleteMedication() {
+    public void When_IdentifierIsInvalid_Expect_PatchMedicationToFail_ThrowResourceNotFoundException() {
+        final Integer medicationId = 122;
+
+        given(medicationsRepository.findById(medicationId)).willReturn(Optional.empty());
+
+        final ResourceNotFoundException expectedException = assertThrows(ResourceNotFoundException.class, () -> medicationsService.patchMedication(medicationId, null), "ResourceNotFoundException was expected");
+        assertThat(expectedException.getMessage().toLowerCase()).isEqualTo(String.format("Could not found a medication with id %d", medicationId).toLowerCase());
+    }
+
+    @Test
+    public void When_JsonPatchIsInvalid_Expect_PatchMedicationToFail_ThrowInvalidTypeIdException() {
+        final String invalidPatchString = "[{\"op\":\"replace\",\"path\":\"/invalidField\",\"value\":\"Paracétamol\"},{\"ope\":\"remove\",\"path\":\"/invalidField2\"}]";
+        final ObjectMapper mapper = new ObjectMapper();
+
+        assertThrows(InvalidTypeIdException.class, () -> {
+            final JsonNode node = mapper.readTree(invalidPatchString);
+            final JsonPatch patch = JsonPatch.fromJson(node);
+            final Integer medicationId = 122;
+
+            medicationsService.patchMedication(medicationId, patch);
+        }, "InvalidTypeIdException was expected");
+    }
+
+    @Test
+    public void Expect_DeleteMedication() {
         medicationsService.deleteMedication(any(Integer.class));
 
         verify(medicationsStockRepository).deleteByMedicationId(any(Integer.class));

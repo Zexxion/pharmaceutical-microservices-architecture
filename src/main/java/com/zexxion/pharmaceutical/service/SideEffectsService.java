@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.SideEffectDTO;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
 import java.util.List;
 
 public interface SideEffectsService {
@@ -11,6 +13,6 @@ public interface SideEffectsService {
     SideEffectDTO getSideEffect(final Integer sideEffectId);
     SideEffectDTO saveSideEffect(final SideEffectDTO sideEffect);
     SideEffectDTO updateSideEffect(final Integer sideEffectId, final SideEffectDTO sideEffect);
-    SideEffectDTO patchSideEffect(final Integer sideEffectId, final JsonPatch patch) throws JsonPatchException, JsonProcessingException;
+    SideEffectDTO patchSideEffect(final Integer sideEffectId, final JsonPatch patch) throws JsonPatchException, JsonProcessingException, ResourceNotFoundException;
     void deleteSideEffect(final Integer sideEffectId);
 }

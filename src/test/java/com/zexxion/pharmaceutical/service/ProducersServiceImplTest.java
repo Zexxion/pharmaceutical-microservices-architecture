@@ -13,12 +13,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -38,7 +40,7 @@ public class ProducersServiceImplTest {
     }
 
     @Test
-    public void testGetProducersList() {
+    public void Expect_GetProducersList() {
         final List<Producer> producers = getProducers();
         given(producersRepository.findAll()).willReturn(producers);
 
@@ -50,7 +52,7 @@ public class ProducersServiceImplTest {
     }
 
     @Test
-    public void testGetProducer() {
+    public void When_IdentifierIsValid_Expect_GetProducer() {
         final Producer producerEntity = getProducer();
         final ProducerDTO producer = producerModelMapper.convertToDTO(producerEntity);
         final Integer producerId = producerEntity.getId();
@@ -63,7 +65,17 @@ public class ProducersServiceImplTest {
     }
 
     @Test
-    public void testSaveProducer() {
+    public void When_IdentifierIsInvalid_GetNoneProducer() {
+        final Integer producerId = 122;
+
+        given(producersRepository.findById(producerId)).willReturn(Optional.empty());
+        final ProducerDTO nullProducer = producersService.getProducer(producerId);
+
+        assertThat(nullProducer).isNull();
+    }
+
+    @Test
+    public void Expect_SaveProducer() {
         final Producer producerTest = getProducers().get(0);
         final ProducerDTO producerTestDto = producerModelMapper.convertToDTO(producerTest);
 
@@ -76,7 +88,7 @@ public class ProducersServiceImplTest {
     }
 
     @Test
-    public void testUpdateProducer() {
+    public void Expect_UpdateProducer() {
         final Producer producerEntity = getProducer();
         final ProducerDTO producer = producerModelMapper.convertToDTO(producerEntity);
         final Integer producerId = producerEntity.getId();
@@ -89,7 +101,7 @@ public class ProducersServiceImplTest {
     }
 
     @Test
-    public void testPatchProducer() throws IOException, JsonPatchException {
+    public void When_IdentifierIsValid_Expect_PatchProducer() throws IOException, JsonPatchException {
         final String patchString = "[{\"op\":\"replace\",\"path\":\"/name\",\"value\":\"Pfizer Inc. - patched\"}]";
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.readTree(patchString);
@@ -110,7 +122,17 @@ public class ProducersServiceImplTest {
     }
 
     @Test
-    public void testDeleteProducer() {
+    public void When_IdentifierIsInvalid_Expect_PatchSideEffectToFail_ThrowResourceNotFoundException() {
+        final Integer producerId = 122;
+
+        given(producersRepository.findById(producerId)).willReturn(Optional.empty());
+
+        final ResourceNotFoundException expectedException = assertThrows(ResourceNotFoundException.class, () -> producersService.patchProducer(producerId, null), "ResourceNotFoundException was expected");
+        assertThat(expectedException.getMessage().toLowerCase()).isEqualTo(String.format("Could not found a producer with id %d", producerId).toLowerCase());
+    }
+
+    @Test
+    public void Expect_DeleteProducer() {
         final int producerId = 1;
         producersService.deleteProducer(producerId);
         verify(producersRepository).deleteById(producerId);
