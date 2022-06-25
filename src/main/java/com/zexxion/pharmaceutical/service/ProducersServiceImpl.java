@@ -8,6 +8,7 @@ import com.zexxion.pharmaceutical.persistence.entities.Producer;
 import com.zexxion.pharmaceutical.persistence.repositories.ProducersRepository;
 import com.zexxion.pharmaceutical.serialization.mapping.ProducerModelMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,15 @@ public class ProducersServiceImpl implements ProducersService {
 
     @Override
     public ProducerDTO getProducer(final Integer producerId) {
-        return modelMapper.convertToDTO(producersRepository.findById(producerId).orElse(null));
+        Optional<Producer> producerOptional = producersRepository.findById(producerId);
+
+        if (producerOptional.isPresent()) {
+            final Optional<ProducerDTO> producerDtoOptional = producerOptional.map(modelMapper::convertToDTO);
+
+            return producerDtoOptional.orElse(null);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -58,7 +67,7 @@ public class ProducersServiceImpl implements ProducersService {
 
             return modelMapper.convertToDTO(producersRepository.save(producerEntity));
         } else {
-            return null;
+            throw new ResourceNotFoundException(String.format("Could not found a producer with id %d", producerId));
         }
     }
 

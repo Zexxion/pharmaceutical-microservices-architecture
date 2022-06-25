@@ -8,6 +8,7 @@ import com.zexxion.pharmaceutical.persistence.entities.SideEffect;
 import com.zexxion.pharmaceutical.persistence.repositories.SideEffectsRepository;
 import com.zexxion.pharmaceutical.serialization.mapping.SideEffectModelMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -29,14 +30,14 @@ public class SideEffectServiceImpl implements SideEffectsService {
     }
 
     @Override
-    public SideEffectDTO getSideEffect(Integer sideEffectId) {
+    public SideEffectDTO getSideEffect(final Integer sideEffectId) {
         final Optional<SideEffect> sideEffectEntity = sideEffectsRepository.findById(sideEffectId);
 
         return sideEffectEntity.map(modelMapper::convertToDTO).orElse(null);
     }
 
     @Override
-    public SideEffectDTO saveSideEffect(SideEffectDTO sideEffect) {
+    public SideEffectDTO saveSideEffect(final SideEffectDTO sideEffect) {
         final SideEffect sideEffectEntity = modelMapper.convertToEntity(sideEffect);
         final SideEffect persistedSideEffect = sideEffectsRepository.save(sideEffectEntity);
 
@@ -44,7 +45,7 @@ public class SideEffectServiceImpl implements SideEffectsService {
     }
 
     @Override
-    public SideEffectDTO updateSideEffect(Integer sideEffectId, SideEffectDTO sideEffect) {
+    public SideEffectDTO updateSideEffect(final Integer sideEffectId, final SideEffectDTO sideEffect) {
         sideEffect.setId(sideEffectId);
         final SideEffect sideEffectEntity = modelMapper.convertToEntity(sideEffect);
 
@@ -52,7 +53,7 @@ public class SideEffectServiceImpl implements SideEffectsService {
     }
 
     @Override
-    public SideEffectDTO patchSideEffect(Integer sideEffectId, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+    public SideEffectDTO patchSideEffect(final Integer sideEffectId, final JsonPatch patch) throws JsonPatchException, JsonProcessingException, ResourceNotFoundException {
         final Optional<SideEffect> optionalSideEffect = sideEffectsRepository.findById(sideEffectId);
 
         if (optionalSideEffect.isPresent()) {
@@ -62,12 +63,12 @@ public class SideEffectServiceImpl implements SideEffectsService {
 
             return modelMapper.convertToDTO(sideEffectsRepository.save(sideEffectEntity));
         } else {
-            return null;
+            throw new ResourceNotFoundException(String.format("Could not found a side effect with id %d", sideEffectId));
         }
     }
 
     @Override
-    public void deleteSideEffect(Integer sideEffectId) {
+    public void deleteSideEffect(final Integer sideEffectId) {
         sideEffectsRepository.deleteById(sideEffectId);
     }
 }

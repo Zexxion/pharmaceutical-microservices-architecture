@@ -10,6 +10,7 @@ import com.zexxion.pharmaceutical.persistence.repositories.MedicationsRepository
 import com.zexxion.pharmaceutical.persistence.repositories.MedicationsStockRepository;
 import com.zexxion.pharmaceutical.serialization.mapping.MedicationModelMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +86,7 @@ public class MedicationsServiceImpl implements MedicationsService {
 
             return mapper.convertToDTO(medicationsRepository.save(medicationEntity));
         } else {
-            return null;
+            throw new ResourceNotFoundException(String.format("Could not found a medication with id %d", medicationId));
         }
     }
 
