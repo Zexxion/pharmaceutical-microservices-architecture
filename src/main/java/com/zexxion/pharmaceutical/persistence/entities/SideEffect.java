@@ -16,7 +16,7 @@ public class SideEffect implements DomainEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "description", length = 48)
+    @Column(name = "description", length = 48, nullable = false)
     private String description;
 
     @ManyToMany
