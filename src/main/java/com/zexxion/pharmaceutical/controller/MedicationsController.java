@@ -70,7 +70,7 @@ public class MedicationsController {
     }
 
     //TODO: Add a JSON Patch example value for request body
-    @Operation(summary = "Edit one or many fields of an existing medication")
+    @Operation(summary = "Edit one or many fields of an existing medication using JSON Patch specification")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Medication has been successfully edited", content = @Content),
         @ApiResponse(responseCode = "500", description = "An internal server error occurred while editing the medication", content = @Content),
