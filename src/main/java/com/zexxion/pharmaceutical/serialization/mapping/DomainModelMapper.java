@@ -1,6 +1,6 @@
 package com.zexxion.pharmaceutical.serialization.mapping;
 
 public interface DomainModelMapper {
-    DomainDTO convertToDTO(DomainEntity entity);
-    DomainEntity convertToEntity(DomainDTO dto);
+    DomainDTO convertToDTO(final DomainEntity entity);
+    DomainEntity convertToEntity(final DomainDTO dto);
 }

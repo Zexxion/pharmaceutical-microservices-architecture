@@ -11,24 +11,24 @@ import java.util.List;
 
 public class ProducerModelMapper implements DomainModelMapper, DomainModelPatcher {
     @Override
-    public ProducerDTO convertToDTO(DomainEntity entity) {
+    public ProducerDTO convertToDTO(final DomainEntity entity) {
         final Producer producerEntity = (Producer) entity;
         return new ModelMapper().map(producerEntity, ProducerDTO.class);
     }
 
     @Override
-    public Producer convertToEntity(DomainDTO dto) {
+    public Producer convertToEntity(final DomainDTO dto) {
         final ProducerDTO producerDTO = (ProducerDTO) dto;
         return new ModelMapper().map(producerDTO, Producer.class);
     }
 
     @Override
-    public ProducerDTO applyPatchToDto(JsonPatch patch, DomainDTO dto) throws JsonPatchException, JsonProcessingException {
+    public ProducerDTO applyPatchToDto(final JsonPatch patch, final DomainDTO dto) throws JsonPatchException, JsonProcessingException {
         return (ProducerDTO) ModelPatcher.applyPatchToDto(patch, dto);
     }
 
     @Override
-    public List<? extends DomainDTO> applyPatchToDtoList(JsonPatch patch, List<? extends DomainDTO> dtoList) throws JsonPatchException, JsonProcessingException {
+    public List<? extends DomainDTO> applyPatchToDtoList(final JsonPatch patch, final List<? extends DomainDTO> dtoList) {
         return null;
     }
 }

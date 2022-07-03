@@ -27,7 +27,7 @@ public class MedicationModelMapper implements DomainModelMapper, DomainModelPatc
     }
 
     @Override
-    public List<? extends DomainDTO> applyPatchToDtoList(JsonPatch patch, List<? extends DomainDTO> dtoList) throws JsonPatchException, JsonProcessingException {
+    public List<? extends DomainDTO> applyPatchToDtoList(final JsonPatch patch, List<? extends DomainDTO> dtoList) throws JsonPatchException, JsonProcessingException {
         return ModelPatcher.applyPatchToDtoList(patch, dtoList);
     }
 }
