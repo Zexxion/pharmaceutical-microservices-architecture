@@ -50,7 +50,7 @@ public class MedicationsController {
 
     @Operation(summary = "Save a new medication to the database")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Medication has been and saved in the database", content = @Content),
+        @ApiResponse(responseCode = "201", description = "Medication has been saved in the database", content = @Content),
         @ApiResponse(responseCode = "500", description = "An internal server error occurred while saving the medication to the database", content = @Content)
     })
     @PostMapping(path = "/")
