@@ -5,7 +5,6 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.SideEffectDTO;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-
 import java.util.List;
 
 public interface SideEffectsService {

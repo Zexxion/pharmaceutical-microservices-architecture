@@ -6,7 +6,10 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.SideEffectDTO;
 import com.zexxion.pharmaceutical.service.SideEffectsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +28,7 @@ public class SideEffectsController {
 
     @Operation(summary = "Get all existing side effects")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "The list of all side effects")
+        @ApiResponse(responseCode = "200", description = "The list of all side effects", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SideEffectDTO.class))))
     })
     @GetMapping(path = "/")
     public ResponseEntity<List<SideEffectDTO>> getSideEffects() {
@@ -34,7 +37,7 @@ public class SideEffectsController {
 
     @Operation(summary = "Get a side effect by its id")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Found the side effect"),
+        @ApiResponse(responseCode = "200", description = "Found the side effect", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SideEffectDTO.class))),
         @ApiResponse(responseCode = "404", description = "The side effect was not fond", content = @Content)
     })
     @GetMapping(path = "{side-effect-id}")
@@ -44,7 +47,7 @@ public class SideEffectsController {
 
     @Operation(summary = "Save a new side effect to the database")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Side effect has been saved to the database", content = @Content),
+        @ApiResponse(responseCode = "201", description = "Side effect has been saved to the database", content = @Content, headers = @Header(name = HttpHeaders.LOCATION, description = "The access URL of the newly created side effect")),
         @ApiResponse(responseCode = "500", description = "An internal server error occurred while saving the side effect to the database", content = @Content)
     })
     @PostMapping(path = "/")
@@ -83,6 +86,7 @@ public class SideEffectsController {
             @ApiResponse(responseCode = "204", description = "The side effect has successfully be replaced", content = @Content),
             @ApiResponse(responseCode = "400", description = "The provided side effect id was not found or the provided side effect payload is badly formatted", content = @Content)
     })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The side effect to save into the database", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SideEffectDTO.class)))
     @PutMapping(path = "/{side-effect-id}")
     public ResponseEntity<?> updateSideEffect(@PathVariable(name = "side-effect-id") final Integer sideEffectId, @RequestBody final SideEffectDTO sideEffect) {
         final SideEffectDTO updatedSideEffect = sideEffectsService.updateSideEffect(sideEffectId, sideEffect);

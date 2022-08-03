@@ -27,11 +27,14 @@ public class Medication implements DomainEntity {
     @Column(name = "dosage", nullable = false)
     private Integer dosage;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "producer")
     private Producer producer;
 
-    @ManyToMany(mappedBy = "medications")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "medication_side_effect",
+            joinColumns = { @JoinColumn(name = "id_side_effect") },
+            inverseJoinColumns = { @JoinColumn(name = "id_medication") })
     private List<SideEffect> sideEffects;
 
     @Transient

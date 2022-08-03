@@ -3,10 +3,14 @@ package com.zexxion.pharmaceutical.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.zexxion.pharmaceutical.persistence.dto.MedicationDTO;
 import com.zexxion.pharmaceutical.persistence.dto.ProducerDTO;
 import com.zexxion.pharmaceutical.service.ProducersService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +29,7 @@ public class ProducersController {
 
     @Operation(summary = "Get all existing producers")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "The list of all producers")
+        @ApiResponse(responseCode = "200", description = "The list of all producers", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProducerDTO.class))))
     })
     @GetMapping(path = "/")
     public ResponseEntity<List<ProducerDTO>> getProducers() {
@@ -34,7 +38,7 @@ public class ProducersController {
 
     @Operation(summary = "Get a producer by its id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the producer"),
+            @ApiResponse(responseCode = "200", description = "Found the producer", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProducerDTO.class))),
             @ApiResponse(responseCode = "404", description = "The producer was not found", content = @Content)
     })
     @GetMapping(path = "/{producer-id}")
@@ -50,7 +54,7 @@ public class ProducersController {
 
     @Operation(summary = "Save a new producer to the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Producer has been and saved in the database", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Producer has been and saved in the database", content = @Content, headers = @Header(name = HttpHeaders.LOCATION, description = "The access URL of the newly created producer")),
             @ApiResponse(responseCode = "500", description = "An internal server error occurred while saving the producer to the database", content = @Content)
     })
     @PostMapping(path = "/")
@@ -98,6 +102,7 @@ public class ProducersController {
             @ApiResponse(responseCode = "204", description = "The producer has successfully be replaced", content = @Content),
             @ApiResponse(responseCode = "400", description = "The provided producer id was not found or the provided producer payload is badly formatted", content = @Content)
     })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The producer to save into the database", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProducerDTO.class)))
     @PutMapping(path = "/{producer-id}")
     public ResponseEntity<?> updateProducer(@PathVariable(name = "producer-id") final Integer producerId, @RequestBody ProducerDTO producer) {
         final ProducerDTO updatedProducer = producersService.updateProducer(producerId, producer);

@@ -6,7 +6,10 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.zexxion.pharmaceutical.persistence.dto.MedicationDTO;
 import com.zexxion.pharmaceutical.service.MedicationsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +28,7 @@ public class MedicationsController {
 
     @Operation(summary = "Get all existing medications")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "The list of all medications")
+        @ApiResponse(responseCode = "200", description = "The list of all medications", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MedicationDTO.class))))
     })
     @GetMapping(path = "/")
     public ResponseEntity<List<MedicationDTO>> getMedications() {
@@ -34,7 +37,7 @@ public class MedicationsController {
 
     @Operation(summary = "Get a medication by its id")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Found the medication"),
+        @ApiResponse(responseCode = "200", description = "Found the medication", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MedicationDTO.class))),
         @ApiResponse(responseCode = "404", description = "The medication was not found", content = @Content)
     })
     @GetMapping(path = "/{medication-id}")
@@ -50,9 +53,10 @@ public class MedicationsController {
 
     @Operation(summary = "Save a new medication to the database")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Medication has been saved in the database", content = @Content),
+        @ApiResponse(responseCode = "201", description = "Medication has been saved in the database", content = @Content, headers = @Header(name = HttpHeaders.LOCATION, description = "The access URL of the newly created medication")),
         @ApiResponse(responseCode = "500", description = "An internal server error occurred while saving the medication to the database", content = @Content)
     })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The medication to save into the database", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = MedicationDTO.class)))
     @PostMapping(path = "/")
     public ResponseEntity<?> saveMedication(@RequestBody final MedicationDTO medication) {
         final MedicationDTO createdMedication = medicationsService.saveMedication(medication);
@@ -96,6 +100,7 @@ public class MedicationsController {
         @ApiResponse(responseCode = "204", description = "The medication has successfully be replaced", content = @Content),
         @ApiResponse(responseCode = "400", description = "The provided medication id was not found or the provided medication payload is badly formatted", content = @Content)
     })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The medication to save into the database", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MedicationDTO.class)))
     @PutMapping(path = "/{medication-id}")
     public ResponseEntity<?> updateMedication(@PathVariable("medication-id") final Integer medicationId,
                                               @RequestBody final MedicationDTO medication) {

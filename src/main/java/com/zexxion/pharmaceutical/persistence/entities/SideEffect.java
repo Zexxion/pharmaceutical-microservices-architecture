@@ -19,10 +19,7 @@ public class SideEffect implements DomainEntity {
     @Column(name = "description", length = 48, nullable = false)
     private String description;
 
-    @ManyToMany
-    @JoinTable(name = "medication_side_effect",
-            joinColumns = { @JoinColumn(name = "id_side_effect") },
-            inverseJoinColumns = { @JoinColumn(name = "id_medication") })
+    @ManyToMany(mappedBy = "sideEffects")
     private List<Medication> medications;
 
     public SideEffect() { }
